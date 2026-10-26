@@ -145,10 +145,9 @@ Copier ou générer le fichier `.env` à partir de `.env.example`. Variables pr�
 
 **Statut : à compléter après mise en ligne et vérification.**
 
-- **Plateforme choisie :** [Render]
-- **URL publique :** [https://...]
-- **Dépôt GitHub :** [https://github.com/...]
-- **Date de vérification :** [JJ/MM/AAAA]
+- **Plateforme choisie :** Render
+- **URL publique :** https://secureshop-sv04.onrender.com/
+- **Dépôt GitHub :** https://github.com/Sang-precieux/SecureShop
 
 Le projet est une application Django **dynamique** : un simple hébergement de pages statiques tel que GitHub Pages ne suffit pas pour faire fonctionner l'authentification, les sessions, la base et les paiements simulés.
 
@@ -229,7 +228,7 @@ Créer des comptes **réservés à la démonstration**, avec permissions minimal
 
 Le dépôt doit contenir ce `README.md`, le code source, les dépendances, `.env.example`, les tests et les captures. **Pour la remise finale, fournir uniquement deux liens :**
 
-1. **Site public :** [URL HTTPS vérifiée]
-2. **Dépôt GitHub :** [URL du dépôt public vérifié]
+1. **Site public :** https://secureshop-sv04.onrender.com/
+2. **Dépôt GitHub :** https://github.com/Sang-precieux/SecureShop
 
 Vérifier les deux liens en **navigation privée** avant la remise.
