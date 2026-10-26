@@ -162,7 +162,7 @@ Avant la mise en ligne, adapter et vérifier :
 7. L'envoi des OTP pour les comptes de démonstration : prévoir un SMTP fonctionnel ou une procédure de démonstration sûre.
 8. Les tests complets depuis un navigateur privé, sans session préexistante.
 
-La configuration présente dans l'archive est avant tout **locale** ; cette section ne prétend pas que le déploiement public est déjà réalisé.
+La configuration présente dans l'archive est avant tout **locale** ; cette section ne prétend pas que le déploiement public est déjà réalisé
 
 ## 9. Tests à effectuer et à documenter
 
