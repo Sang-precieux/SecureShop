@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}<div class="page narrow"><h1>Laboratoire d'intégrité HMAC</h1><p class="muted">Réservé à l'administrateur. Manipulez uniquement des données de test ; cela ne modifie pas le paiement d'origine.</p>
+<div class="panel"><h2>Transaction {{ tx.reference }}</h2><p>Client : {{ tx.user.username }} · Montant original : {{ tx.amount }} $</p>
+<form method="post" class="stack">{% csrf_token %}
+<label>Référence <input name="reference" value="{{ form_data.reference }}" required maxlength="40"></label>
+<label>Montant <input name="amount" value="{{ form_data.amount }}" required></label>
+<label>Nonce <input name="nonce" value="{{ form_data.nonce }}" required maxlength="128"></label>
+<label>Signature HMAC <textarea name="signature" rows="3" required>{{ form_data.signature }}</textarea></label>
+<button class="btn" type="submit">Lancer le test d'intégrité</button></form></div>
+{% if result %}<div class="panel" style="margin-top:18px"><h2>Résultat du test</h2><p>{{ result.reason }}</p><p>HMAC : {% if result.hmac_valid %}valide{% else %}invalide{% endif %} · Nonce : {% if result.nonce_valid %}valide{% else %}invalide / consommé{% endif %}</p></div>{% endif %}
+<h2>Historique du test</h2><div class="panel table-scroll"><table><tr><th>Date</th><th>Type</th><th>Motif</th></tr>{% for e in security_events %}<tr><td>{{ e.created_at|date:'d/m/Y H:i' }}</td><td>{{ e.get_test_type_display }}</td><td>{{ e.reason }}</td></tr>{% empty %}<tr><td colspan="3">Aucun test pour cette transaction.</td></tr>{% endfor %}</table></div>
+</div>{% endblock %}

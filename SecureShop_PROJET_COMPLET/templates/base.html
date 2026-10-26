@@ -1,0 +1,197 @@
+{% load static cart_extras %}
+{% cart_total as cart_count %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SecureShop{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root{--blue:#2256b5;--navy:#172e53;--ink:#20324f;--muted:#687b94;--bg:#f4f7fc;--line:#e1e8f1;--red:#dc3030}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky;top:0;z-index:5;background:white;border-bottom:1px solid var(--line)}
+    .topbar{max-width:1200px;margin:auto;padding:16px 24px;display:flex;align-items:center;gap:24px;justify-content:space-between;flex-wrap:wrap}
+    .brand{font-weight:800;color:var(--navy);font-size:23px;display:flex;align-items:center;gap:10px}
+    .brand i{color:var(--blue)}.brand small{font-size:11px;display:block;font-weight:400;color:var(--muted)}
+    nav{display:flex;gap:17px;align-items:center;flex-wrap:wrap}nav a{font-weight:600;color:var(--ink)}
+    nav form{display:inline}.link{background:none;border:0;font:inherit;cursor:pointer;color:var(--ink);font-weight:600}
+    .cart-link{position:relative;padding:7px 8px}.cart-badge{background:var(--red);color:white;border-radius:20px;min-width:21px;height:21px;display:inline-flex;justify-content:center;align-items:center;font-size:12px;font-weight:800;margin-left:4px;box-shadow:0 2px 6px #0002}
+    .user-chip{background:#eef3fb;padding:8px 11px;border-radius:30px;font-size:13px}
+    .container,.page{max-width:1200px;margin:32px auto;padding:0 24px}.narrow{max-width:900px}
+    .hero{background:linear-gradient(120deg,#173c87,#2d6bd0);color:white;border-radius:22px;padding:48px 42px;margin-bottom:30px}.hero h1{font-size:clamp(28px,4vw,44px);margin:0 0 12px}.hero p{line-height:1.7;max-width:750px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:20px}
+    .card,.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 4px 16px #15345a08}
+    .card h3{margin:12px 0 6px}.muted,small{color:var(--muted)}.product-icon{height:135px;background:#edf3fb;border-radius:12px;display:grid;place-items:center;font-size:75px;color:#274c8c}
+    .btn,button.btn{background:var(--blue);color:white;border:0;border-radius:9px;padding:11px 18px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:700;font:inherit;cursor:pointer;text-decoration:none}
+    .btn:hover{background:#173c87;text-decoration:none}.btn.secondary{background:#eaf1ff;color:#1c4c97}.btn.danger{background:#bb2631}.btn.wide{width:100%}
+    .price{font-size:23px;font-weight:800;color:var(--navy)}
+    .flash{max-width:1200px;margin:15px auto 0;padding:12px 18px;background:#e7f4ee;border-left:4px solid #16804a;border-radius:8px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.line{height:1px;background:var(--line);margin:18px 0}
+    table{width:100%;border-collapse:collapse;background:white}th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:#506785;font-size:13px}
+    .table-scroll{overflow:auto}.label{font-weight:650;display:block;margin:14px 0 6px}input,select,textarea{border:1px solid #cbd7e8;border-radius:8px;padding:11px 12px;max-width:100%;font:inherit}input:not([type=checkbox]),select,textarea{width:100%}input[type=radio]{width:auto}
+    .stack{display:flex;flex-direction:column;gap:16px}.qty-form{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.qty-form button{min-width:39px}.qty{font-weight:800;font-size:18px;min-width:30px;text-align:center}
+    .pill{display:inline-block;border-radius:20px;background:#edf2fa;color:#345577;padding:5px 11px;font-size:12px;font-weight:700}.pill.success{background:#e2f6e8;color:#176d36}.pill.danger{background:#fee8e8;color:#a62323}
+    footer{text-align:center;padding:35px 18px;color:var(--muted);font-size:13px}h1,h2{color:var(--navy)}.hero h1{color:white}
+    @media(max-width:700px){.topbar{gap:12px}.container,.page{padding:0 15px}.hero{padding:27px 22px}.user-chip{display:none}}
+    /* RESPONSIVE SECURESHOP */
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img, video, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.card, .panel {
+    min-width: 0;
+}
+
+.grid {
+    grid-template-columns:
+        repeat(auto-fit, minmax(min(100%, 225px), 1fr));
+}
+
+/* TABLETTES */
+@media screen and (max-width: 768px) {
+
+    header {
+        position: static;
+    }
+
+    .topbar {
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    nav {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .container, .page {
+        padding: 0 15px;
+        margin: 20px auto;
+    }
+
+    .hero {
+        padding: 25px 20px;
+    }
+
+    .card, .panel {
+        padding: 18px;
+    }
+
+    .grid {
+        gap: 15px;
+    }
+
+    .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    input, select, textarea {
+        font-size: 16px;
+    }
+
+    .btn {
+        min-height: 44px;
+    }
+}
+
+/* SMARTPHONES */
+@media screen and (max-width: 480px) {
+
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .brand {
+        font-size: 20px;
+    }
+
+    nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    nav a, nav button {
+        text-align: center;
+        font-size: 13px;
+        white-space: normal;
+    }
+
+    nav form {
+        display: block;
+    }
+
+    nav form button {
+        width: 100%;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card.row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .card.row > .price {
+        text-align: right;
+    }
+
+    .qty-form button {
+        min-height: 44px;
+    }
+
+    .hero {
+        padding: 22px 18px;
+    }
+
+    h1 {
+        font-size: clamp(24px, 7vw, 32px);
+    }
+}  
+  
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+<header><div class="topbar">
+  <a class="brand" href="{% url 'home' %}"><i class="fa-solid fa-shield-halved"></i><span>SecureShop<small>Boutique de démonstration</small></span></a>
+  <nav aria-label="Navigation principale">
+    {% if user.is_authenticated and user.is_staff %}
+      <a href="{% url 'admin_dashboard' %}">Tableau de bord</a>
+      <a href="{% url 'payment_journal' %}">Paiements</a>
+      <a href="{% url 'security_journal' %}">Sécurité</a>
+      <a href="{% url 'admin_products' %}">Produits</a>
+      <a href="{% url 'admin_users' %}">Utilisateurs</a>
+    {% else %}
+      <a href="{% url 'home' %}">Accueil</a>
+      <a href="{% url 'products' %}">Produits</a>
+      <a class="cart-link" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i> Panier
+        {% if cart_count > 0 %}<span class="cart-badge" aria-label="{{ cart_count }} articles">{{ cart_count }}</span>{% endif %}</a>
+    {% endif %}
+    {% if user.is_authenticated %}
+      <span class="user-chip"><i class="fa-solid fa-user"></i> {{ user.first_name|default:user.username }}</span>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link" type="submit">Déconnexion</button></form>
+    {% else %}
+      <a href="{% url 'register' %}">Créer un compte</a>
+      <a class="btn" href="{% url 'login' %}">Connexion</a>
+    {% endif %}
+  </nav>
+</div></header>
+{% for message in messages %}<div class="flash" role="status">{{ message }}</div>{% endfor %}
+<main>{% block content %}{% endblock %}</main>
+<footer>SecureShop — Application académique • Paiements fictifs, aucun débit réel</footer>
+</body></html>

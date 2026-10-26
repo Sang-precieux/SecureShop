@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Vérification OTP — SecureShop{% endblock %}
+
+{% block content %}
+<div class="page narrow"><div class="panel" style="max-width:590px;margin:48px auto">
+<h1>Vérifier votre code </h1><p class="muted"> Un code à 6 chiffres vous a été envoyé
+    par e-mail. Saisissez-le ci-dessous
+    pour confirmer votre identité.</p>
+<p>
+    <strong>
+        Temps restant :
+        <span id="compteur">{{ seconds }}</span> secondes.
+    </strong>
+</p>
+    <form method="post" class="stack">{% csrf_token %}
+<label><span class="label">Code à 6 chiffres</span><input name="code" required minlength="6" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" autocomplete="one-time-code" autofocus></label>
+<button class="btn wide" type="submit">Entrez votre code de verification</button></form>
+</div></div>
+<script>
+    let tempsRestant = Number("{{ seconds|default:0 }}");
+    const compteur = document.getElementById("compteur");
+
+    const intervalle = setInterval(function() {
+        tempsRestant--;
+
+        if (tempsRestant <= 0) {
+            tempsRestant = 0;
+            clearInterval(intervalle);
+
+            compteur.textContent = "0";
+            compteur.style.color = "red";
+            return;
+        }
+
+        compteur.textContent = tempsRestant;
+    }, 1000);
+</script>
+{% endblock %}

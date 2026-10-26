@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}<div class="page"><h1>Journal des paiements (administration)</h1><p class="muted">Toutes les transactions simulées, avec les clients et leurs modes de paiement.</p>
+<div class="panel table-scroll"><table><tr><th>Date</th><th>Référence</th><th>Client</th><th>Mode</th><th>Montant</th><th>Statut</th><th>Intégrité</th></tr>
+{% for tx in transactions %}<tr><td>{{ tx.created_at|date:'d/m/Y H:i' }}</td><td>{{ tx.reference }}</td><td>{{ tx.user.username }}</td><td>{{ tx.get_payment_method_display }}</td><td>{{ tx.amount }} $</td><td>{{ tx.get_status_display }}</td><td><a class="btn secondary" href="{% url 'integrity_lab' tx.pk %}">Tester</a></td></tr>
+{% empty %}<tr><td colspan="7">Aucun paiement enregistré.</td></tr>{% endfor %}</table></div></div>{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Administration — SecureShop{% endblock %}
+{% block content %}
+<div class="container">
+  <section class="hero"><p style="margin:0;opacity:.85">ESPACE RÉSERVÉ AUX ADMINISTRATEURS</p><h1>Tableau de bord SecureShop</h1><p>Gestion commerciale, paiements fictifs et suivi de la sécurité. Les clients ne voient pas ces informations.</p></section>
+  <div class="grid">
+    <article class="card"><p class="muted">Utilisateurs clients</p><h1>{{ stats.users }}</h1></article>
+    <article class="card"><p class="muted">Produits</p><h1>{{ stats.products }}</h1></article>
+    <article class="card"><p class="muted">Transactions</p><h1>{{ stats.payments }}</h1></article>
+    <article class="card"><p class="muted">Paiements validés</p><h1>{{ stats.validated }}</h1></article>
+    <article class="card"><p class="muted">Paiements refusés</p><h1>{{ stats.refused }}</h1></article>
+    <article class="card"><p class="muted">En attente</p><h1>{{ stats.pending }}</h1></article>
+    <article class="card"><p class="muted">Montant validé (fictif)</p><h1>{{ stats.revenue }} $</h1></article>
+    <article class="card"><p class="muted">Événements de sécurité</p><h1>{{ stats.security_events }}</h1></article>
+  </div>
+  <h2 style="margin-top:32px">Modules d'administration</h2>
+  <div class="grid">
+    <article class="card"><h3><i class="fa-solid fa-receipt"></i> Paiements</h3><p>Voir toutes les transactions, les clients et les statuts.</p><a class="btn" href="{% url 'payment_journal' %}">Ouvrir le journal</a></article>
+    <article class="card"><h3><i class="fa-solid fa-shield-halved"></i> Sécurité</h3><p>Consulter les alertes et les événements du laboratoire de sécurité.</p><a class="btn" href="{% url 'security_journal' %}">Journal de sécurité</a></article>
+    <article class="card"><h3><i class="fa-solid fa-fingerprint"></i> Intégrité</h3><p>Tester HMAC et le rejeu sur une transaction déjà créée.</p><a class="btn" href="{% url 'payment_journal' %}">Choisir une transaction</a></article>
+    <article class="card"><h3><i class="fa-solid fa-box"></i> Produits</h3><p>Ajouter, modifier ou retirer des articles du catalogue.</p><a class="btn" href="{% url 'admin_products' %}">Gérer les produits</a></article>
+    <article class="card"><h3><i class="fa-solid fa-users"></i> Utilisateurs</h3><p>Voir les comptes et leurs rôles.</p><a class="btn" href="{% url 'admin_users' %}">Voir les utilisateurs</a></article>
+  </div>
+  <h2 style="margin-top:32px">Dernières transactions</h2>
+  <div class="panel table-scroll"><table><tr><th>Référence</th><th>Client</th><th>Montant</th><th>Statut</th><th>Contrôle</th></tr>
+  {% for tx in recent %}<tr><td>{{ tx.reference }}</td><td>{{ tx.user.username }}</td><td>{{ tx.amount }} $</td><td><span class="pill {% if tx.status == 'VALIDEE' %}success{% elif tx.status == 'REFUSEE' %}danger{% endif %}">{{ tx.get_status_display }}</span></td><td><a href="{% url 'integrity_lab' tx.pk %}">Vérifier</a></td></tr>
+  {% empty %}<tr><td colspan="5">Aucune transaction pour l'instant.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}

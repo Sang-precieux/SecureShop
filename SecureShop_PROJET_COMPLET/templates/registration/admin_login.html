@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Connexion Administrateur — SecureShop{% endblock %}
+{% block content %}<div class="page narrow"><div class="panel" style="max-width:550px;margin:55px auto">
+<h1><i class="fa-solid fa-shield-halved"></i> Connexion administrateur</h1><p class="muted">Accès réservé au personnel autorisé. Un code OTP sera envoyé par e-mail après la validation du mot de passe.</p>
+<form method="post">{% csrf_token %}{{ form.non_field_errors }}
+{% for field in form %}<label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}<div style="color:#b42323">{{ field.errors }}</div>{% endfor %}
+<button class="btn wide" style="margin-top:20px" type="submit">Se connecter</button></form>
+<p class="muted" style="margin-top:15px">Vous êtes client ? <a href="{% url 'login' %}">Connexion à la boutique</a>.</p>
+</div></div>{% endblock %}

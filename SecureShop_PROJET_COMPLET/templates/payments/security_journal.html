@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}<div class="page"><h1>Journal de sécurité</h1><p class="muted">Événements et tests de sécurité (500 derniers).</p><div class="panel table-scroll"><table>
+<tr><th>Date</th><th>Type</th><th>Opérateur / client</th><th>Transaction</th><th>Intégrité HMAC</th><th>Accepté</th><th>Motif</th></tr>
+{% for e in events %}<tr><td>{{ e.created_at|date:'d/m/Y H:i' }}</td><td>{{ e.get_test_type_display }}</td><td>{{ e.user.username|default:'—' }}</td><td>{% if e.transaction %}{{ e.transaction.reference }}{% else %}—{% endif %}</td><td>{% if e.hmac_valid %}Valide{% else %}Invalide{% endif %}</td><td>{% if e.accepted %}Oui{% else %}Non{% endif %}</td><td>{{ e.reason }}</td></tr>
+{% empty %}<tr><td colspan="7">Aucun événement.</td></tr>{% endfor %}</table></div></div>{% endblock %}

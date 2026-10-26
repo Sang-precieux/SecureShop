@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Inscription — SecureShop{% endblock %}
+{% block content %}
+<div class="page narrow"><div class="panel" style="max-width:620px;margin:25px auto">
+<h1>Créer un compte client</h1>
+<p class="muted">Votre adresse e-mail sera vérifiée par un code à usage unique valable 40 secondes.</p>
+<form method="post" class="stack">{% csrf_token %}{{ form.non_field_errors }}
+{% for field in form %}
+  <label for="{{ field.id_for_label }}"><span class="label">{{ field.label }}</span>{{ field }}</label>
+  {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+  {% for error in field.errors %}<span style="color:#b32026">{{ error }}</span>{% endfor %}
+{% endfor %}
+<button type="submit" class="btn wide">S'inscrire </button></form>
+<p>Vous avez déjà un compte ? <a href="{% url 'login' %}">Connexion client</a></p>
+</div></div>
+{% endblock %}

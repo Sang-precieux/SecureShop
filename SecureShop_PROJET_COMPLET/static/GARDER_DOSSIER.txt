@@ -1,0 +1,1 @@
+Placez les ressources CSS, JS et images locales ici si nécessaire.

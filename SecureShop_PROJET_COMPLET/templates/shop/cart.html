@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Mon panier — SecureShop{% endblock %}
+{% block content %}
+<div class="page narrow">
+<h1><i class="fa-solid fa-cart-shopping"></i> Mon panier</h1>
+<p class="muted">{{ total_articles }} article{{ total_articles|pluralize }} dans votre panier.</p>
+{% for p,q,s in items %}
+  <article class="card row" style="margin:14px 0">
+    <div style="font-size:36px;color:#2854a1"><i class="fa-solid fa-{{ p.icon|default:'box' }}"></i></div>
+    <div style="flex:1;min-width:150px"><h3>{{ p.name }}</h3><p class="muted">{{ p.price }} $ l'unité</p>
+      <form class="qty-form" method="post" action="{% url 'update_cart' p.pk %}">
+        {% csrf_token %}
+        <button class="btn secondary" type="submit" name="action" value="decrement" aria-label="Diminuer">−</button>
+        <span class="qty">{{ q }}</span>
+        <button class="btn secondary" type="submit" name="action" value="increment" aria-label="Augmenter">+</button>
+        <button class="btn danger" type="submit" name="action" value="remove"><i class="fa-solid fa-trash"></i> Supprimer</button>
+      </form>
+    </div>
+    <div class="price">{{ s }} $</div>
+  </article>
+{% empty %}
+  <div class="panel"><p>Votre panier est vide.</p><a class="btn" href="{% url 'products' %}">Choisir des produits</a></div>
+{% endfor %}
+{% if items %}
+  <section class="panel" style="margin-top:25px;background:#eaf1ff">
+    <h2>Récapitulatif</h2><div class="row"><span>Articles : <strong>{{ total_articles }}</strong></span><span class="price">Total : {{ total }} $</span></div>
+    <div class="line"></div><a class="btn wide" href="{% url 'checkout' %}">Procéder au paiement fictif <i class="fa-solid fa-arrow-right"></i></a>
+    <form method="post" action="{% url 'clear_cart' %}" style="margin-top:13px">{% csrf_token %}<button class="btn secondary" type="submit">Vider le panier</button></form>
+  </section>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page">
+    <h1>Utilisateurs</h1>
+    <p class="muted">
+        Liste des 200 comptes les plus récents.
+        Les administrateurs sont gérés uniquement via le terminal.
+    </p>
+
+    <div class="panel">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Utilisateur</th>
+                    <th>E-mail</th>
+                    <th>Rôle</th>
+                    <th>Compte actif</th>
+                    <th>Inscription</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.pk }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+
+                    <td>
+                        {% if u.is_superuser or u.is_staff %}
+                            Administrateur
+                        {% else %}
+                            Client
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if u.is_active %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+
+                    <td>{{ u.date_joined|date:"d/m/Y H:i" }}</td>
+
+                    <td>
+                        {% if not u.is_staff and not u.is_superuser %}
+                            <form method="post"
+                                  action="{% url 'admin_user_toggle' u.pk %}">
+                                {% csrf_token %}
+                                <button type="submit">
+                                    {% if u.is_active %}
+                                        Désactiver
+                                    {% else %}
+                                        Réactiver
+                                    {% endif %}
+                                </button>
+                            </form>
+                        {% else %}
+                            Protégé
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">Aucun utilisateur.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

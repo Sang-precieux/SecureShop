@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Connexion client — SecureShop{% endblock %}
+{% block content %}
+<div class="page narrow"><div class="panel" style="max-width:600px;margin:42px auto">
+<h1>Connexion client</h1><p class="muted">Pour sécuriser votre connexion, un code de vérification à 6 chiffres vous sera envoyé par e-mail.</p>
+<form method="post" class="stack">{% csrf_token %}{{ form.non_field_errors }}
+{% for field in form %}<label for="{{ field.id_for_label }}"><span class="label">{{ field.label }}</span>{{ field }}</label>
+{% for error in field.errors %}<span style="color:#bd222b">{{ error }}</span>{% endfor %}{% endfor %}
+<button class="btn wide" type="submit">Se connecter</button></form>
+<p>Pas de compte ? <a href="{% url 'register' %}">Inscription</a> • <a href="{% url 'admin_login' %}">Administration</a></p>
+</div></div>
+{% endblock %}

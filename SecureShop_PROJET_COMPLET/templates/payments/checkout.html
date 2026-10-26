@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %}Paiement sécurisé — SecureShop{% endblock %}
+
+{% block content %}
+<div class="page narrow">
+    <h1><i class="fa-solid fa-lock"></i> Paiement sécurisé</h1>
+    <p class="muted">
+        Vérifiez votre commande et choisissez votre moyen de paiement.
+    </p>
+
+    <div class="panel">
+        <h2>Récapitulatif de votre commande</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p, q, s in items %}
+                    <tr>
+                        <td>{{ p.name }}</td>
+                        <td>{{ q }}</td>
+                        <td>{{ s }} $</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" style="margin-top:15px">
+            <strong>Total à payer</strong>
+            <span class="price">{{ total }} $</span>
+        </div>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+        <h2>Choisissez votre moyen de paiement</h2>
+
+        <form method="post" action="{% url 'process_payment' %}">
+            {% csrf_token %}
+
+            <input type="hidden"
+                   name="checkout_token"
+                   value="{{ checkout_token }}">
+
+            <label class="label" for="method">
+                Moyen de paiement
+            </label>
+
+            <select id="method" name="payment_method" required>
+                <option value="">-- Sélectionnez un moyen --</option>
+                {% for value, label in payment_methods %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+<!-- Formulaire Mobile Money -->
+<div id="mobile-fields" style="display:none; margin-top:15px;">
+  <label class="label" for="mobile-number">
+    Numéro Mobile Money
+  </label>
+  <input
+    type="tel"
+    id="mobile-number"
+    name="phone"
+    placeholder="08xxxxxxxx ou +2438xxxxxxxx"
+    autocomplete="tel"
+    inputmode="tel"
+    maxlength="13"
+    pattern="(0[89][0-9]{8}|\+243[89][0-9]{8})"
+    title="Saisissez 10 chiffres commençant par 08 ou 09, ou +243 suivi de 9 chiffres sans zéro."
+>
+  <p class="muted">
+    Saisissez votre numéro Mobile Money personnel :
+    08XXXXXXXX, 09XXXXXXXX ou +243 suivi de 9 chiffres.
+</p>
+</div>
+
+<!-- Formulaire carte Visa-->
+<div id="card-fields" style="display:none; margin-top:15px;">
+  <label class="label" for="card-number">
+    Numéro de carte Visa
+  </label>
+  <input
+    type="text"
+    id="card-number"
+    placeholder="Numéro"
+    autocomplete="off"
+  >
+
+  <label class="label" for="card-expiry">
+    Date d'expiration (MM/AA)
+  </label>
+  <input
+    type="text"
+    id="card-expiry"
+    placeholder="MM/AA"
+    autocomplete="off"
+  >
+
+  <label class="label" for="card-cvv">
+    Code CVV 
+  </label>
+  <input
+    type="text"
+    id="card-cvv"
+    placeholder="123"
+    autocomplete="off"
+  >
+  <p class="muted">
+    Démonstration uniquement. Ne saisissez pas de
+    véritables informations bancaires.
+  </p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const method = document.getElementById("method");
+  const mobile = document.getElementById("mobile-fields");
+  const card = document.getElementById("card-fields");
+  const phone = document.getElementById("mobile-number");
+
+  function updatePaymentFields() {
+    const selected = method.value;
+
+    const isMobile = ["MPESA", "ORANGE", "AIRTEL"]
+      .includes(selected);
+
+    const isCard = ["VISA", "MASTERCARD", "CARD"]
+      .includes(selected);
+
+    mobile.style.display = isMobile ? "block" : "none";
+    card.style.display = isCard ? "block" : "none";
+
+    phone.required = isMobile;
+    phone.disabled = !isMobile;
+  }
+
+  method.addEventListener("change", updatePaymentFields);
+  updatePaymentFields();
+});
+</script>
+            <input type="hidden" name="scenario" value="success">
+
+            <p class="muted" style="margin-top:15px">
+                <i class="fa-solid fa-shield-halved"></i>
+                Paiement sécurisé.
+                
+            </p>
+
+            <button class="btn wide" type="submit">
+                <i class="fa-solid fa-lock"></i>
+                Confirmer le paiement de {{ total }} $
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

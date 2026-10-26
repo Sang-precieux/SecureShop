@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Paiement fictif validé{% endblock %}
+{% block content %}<div class="page narrow"><div class="panel">
+<h1 style="color:#187b46"><i class="fa-solid fa-circle-check"></i> Paiement fictif validé</h1>
+<p>La simulation est terminée avec succès. <strong>Aucun débit réel n'a eu lieu.</strong></p>
+<p><strong>Référence :</strong> {{ tx.reference }}</p>
+<p><strong>Mode :</strong> {{ tx.get_payment_method_display }}</p>
+<p><strong>Montant :</strong> {{ tx.amount }} $</p>
+<p><strong>Date :</strong> {{ tx.created_at|date:'d/m/Y H:i' }}</p>
+<h2>Reçu de démonstration</h2><div class="table-scroll"><table><tr><th>Produit</th><th>Quantité</th><th>Sous-total</th></tr>
+{% for item in receipt_items %}<tr><td>{{ item.name }}</td><td>{{ item.quantity }}</td><td>{{ item.subtotal }} $</td></tr>{% endfor %}
+</table></div><div class="row" style="margin-top:20px"><a class="btn" href="{% url 'products' %}">Continuer mes achats</a><button class="btn secondary" onclick="window.print()" type="button">Imprimer le reçu</button></div></div></div>{% endblock %}

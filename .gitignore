@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+env/
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+.pytest_cache/
+.vscode/

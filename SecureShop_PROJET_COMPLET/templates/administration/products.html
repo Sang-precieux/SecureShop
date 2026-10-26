@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}<div class="page"><div class="row"><h1>Gestion des produits</h1><a class="btn" href="{% url 'admin_product_create' %}">Ajouter un produit</a></div>
+<div class="panel table-scroll"><table><tr><th>Produit</th><th>Prix</th><th>Actions</th></tr>
+{% for p in products %}<tr><td><strong>{{ p.name }}</strong><br><small>{{ p.description }}</small></td><td>{{ p.price }} $</td><td><a href="{% url 'admin_product_edit' p.pk %}">Modifier</a> · <a href="{% url 'admin_product_delete' p.pk %}">Supprimer</a></td></tr>
+{% empty %}<tr><td colspan="3">Aucun produit disponible.</td></tr>{% endfor %}</table></div></div>{% endblock %}
