@@ -11,7 +11,14 @@ if not SECRET_KEY:
     raise RuntimeError('Fichier .env non configuré : lancez INSTALLER_WINDOWS.bat.')
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
-ALLOWED_HOSTS = [h.strip() for h in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if h.strip()]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "secureshop-sv04.onrender.com",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://secureshop-sv04.onrender.com",
+]
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
