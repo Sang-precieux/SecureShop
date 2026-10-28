@@ -1,4 +1,4 @@
 {% extends 'base.html' %}
-{% block content %}<div class="page narrow"><div class="panel"><h1 style="color:#a82c36">Paiement fictif refusé</h1>
+{% block content %}<div class="page narrow"><div class="panel"><h1 style="color:#a82c36">Paiement refusé</h1>
 <p>Le simulateur a refusé cette opération. Aucun montant n'a été débité.</p><p>Référence : {{ tx.reference }}</p><p>Montant : {{ tx.amount }} $</p>
 <a class="btn" href="{% url 'checkout' %}">Réessayer</a></div></div>{% endblock %}
