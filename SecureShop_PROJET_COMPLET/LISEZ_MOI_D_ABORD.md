@@ -40,7 +40,7 @@ py -3 -m venv env
 ## Parcours de démonstration
 
 - **Client** : Accueil → Produits → Ajouter au panier → badge rouge → Panier (+, −, Supprimer) →
-  Paiement → choisir M-Pesa, Orange Money, Airtel Money ou carte **fictifs** →
+  Paiement → choisir M-Pesa, Orange Money, Airtel Money ou carte **autre** →
   résultat validé, refusé ou en attente → reçu.
 - **Admin** : `/accounts/admin-login/` → OTP → tableau de bord →
   journaux des paiements/sécurité → laboratoire d'intégrité → utilisateurs et catalogue.
