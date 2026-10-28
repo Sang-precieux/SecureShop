@@ -151,7 +151,7 @@ def process(request):
                 received_hmac=hmac_value, calculated_hmac=hmac_value,
                 hmac_valid=True, nonce_valid=True,
                 accepted=(status == 'VALIDEE'),
-                reason=f"Paiement fictif : statut {status}. Aucun débit réel.",
+                reason=f"Paiement : statut {status}.",
             )
     except IntegrityError:
         # Requête identique déjà enregistrée : ne surtout pas créer un second paiement
