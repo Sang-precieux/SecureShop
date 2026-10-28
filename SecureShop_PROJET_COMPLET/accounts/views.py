@@ -22,13 +22,55 @@ from .forms import RegistrationForm, EmailAuthenticationForm
 from .models import LoginOTP
 from .security import admin_otp_required
 
+import os
+import logging
+import sib_api_v3_sdk
+
 OTP_LIFETIME_SECONDS = 40
 OTP_MAX_ATTEMPTS = 3
 
+logger = logging.getLogger(__name__)
 
 def otp_hash(user_id, code):
     return salted_hmac('secureshop.login.otp', f'{user_id}:{code}').hexdigest()
 
+
+def envoyer_otp_brevo(destinataire, code):
+    api_key = os.getenv("BREVO_API_KEY")
+    sender_email = os.getenv("BREVO_SENDER_EMAIL")
+
+    if not api_key or not sender_email:
+        logger.error("Configuration Brevo manquante")
+        return False
+
+    configuration = sib_api_v3_sdk.Configuration()
+    configuration.api_key["api-key"] = api_key
+
+    client = sib_api_v3_sdk.ApiClient(configuration)
+    api = sib_api_v3_sdk.TransactionalEmailsApi(client)
+
+    email = sib_api_v3_sdk.SendSmtpEmail(
+        sender={
+            "name": "SecureShop",
+            "email": sender_email
+        },
+        to=[{"email": destinataire}],
+        subject="SecureShop - Code OTP",
+        html_content=f"""
+        <h2>Vérification SecureShop</h2>
+        <p>Votre code de vérification :</p>
+        <h1>{code}</h1>
+        <p>Ce code est valable pendant 40 secondes.</p>
+        <p>Ne partagez jamais ce code.</p>
+        """
+    )
+
+    try:
+        api.send_transac_email(email)
+        return True
+    except Exception:
+        logger.exception("Erreur d'envoi OTP via Brevo")
+        return False
 
 def start_otp(request, user, purpose):
     """Envoi avant login(); préserve uniquement le panier client, pas les sessions d'auth."""
@@ -47,18 +89,12 @@ def start_otp(request, user, purpose):
     )
     request.session['otp_pending_user'] = user.pk
     request.session['otp_purpose'] = purpose
-    try:
-        send_mail(
-            'SecureShop - Code OTP',
-            f'Votre code OTP SecureShop : {code}\nValable 40 secondes. Ne le partagez jamais.',
-            settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False,
-        )
-    except Exception:
+    if not envoyer_otp_brevo(user.email, code):
         LoginOTP.objects.filter(user=user).delete()
         request.session.flush()
         return False
-    return True
 
+    return True
 
 @never_cache
 @require_http_methods(['GET', 'POST'])
