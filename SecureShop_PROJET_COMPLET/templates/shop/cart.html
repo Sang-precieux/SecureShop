@@ -24,7 +24,7 @@
 {% if items %}
   <section class="panel" style="margin-top:25px;background:#eaf1ff">
     <h2>Récapitulatif</h2><div class="row"><span>Articles : <strong>{{ total_articles }}</strong></span><span class="price">Total : {{ total }} $</span></div>
-    <div class="line"></div><a class="btn wide" href="{% url 'checkout' %}">Procéder au paiement fictif <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="line"></div><a class="btn wide" href="{% url 'checkout' %}">Procéder au paiement <i class="fa-solid fa-arrow-right"></i></a>
     <form method="post" action="{% url 'clear_cart' %}" style="margin-top:13px">{% csrf_token %}<button class="btn secondary" type="submit">Vider le panier</button></form>
   </section>
 {% endif %}
