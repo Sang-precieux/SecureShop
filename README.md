@@ -9,9 +9,9 @@
 | MALEBA DIYAZOLA SANG PRECIEUX |
 | NAKALENGI MBUDA DIEU A VU |
 
-**Établissement :** [Université / faculté]  
-**Cours :** [Intitulé du cours]  
-**Année académique :** [Année]
+**Établissement :** [UNIKIN / RÉSEAU & SÉCURITÉ]  
+**Cours :** [Protocole de sécurité réseau]  
+**Année académique :** [2025-2026]
 
 ## 2. Objectifs
 
